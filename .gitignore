@@ -1,0 +1,41 @@
+# Environment and secrets — never commit these
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+config/local.php
+
+# Dependencies
+/vendor/
+/node_modules/
+
+# Build and cache
+/public/build/
+*.cache
+.phpunit.result.cache
+
+# Logs and databases
+*.log
+/logs/
+*.sqlite
+*.sqlite3
+/database/dumps/
+
+# Uploads at runtime
+/public/uploads/
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# AMPPS / XAMPP local artefacts
+.htaccess.bak
