@@ -32,7 +32,7 @@ See `docs/test-protocol.md`.
 
 | Part | Tech |
 | --- | --- |
-| `client/` | Vanilla JavaScript, npm + Vite (dev server and bundling): distributor PWA and admin dashboard |
+| `client/` | Next.js 16 (TypeScript, App Router, Tailwind): distributor PWA and admin dashboard |
 | `server/` | Laravel 13 (PHP 8.5): API, server-side scoring, integrity flags |
 | Database | Supabase cloud (Postgres). There is no local database |
 
@@ -55,11 +55,11 @@ php artisan key:generate
 # fill DB_* from Supabase: Project Settings > Database > Connect > Session pooler
 php artisan serve
 
-# Client (vanilla JS + Vite) → http://localhost:5173, in a second terminal
+# Client (Next.js) → http://localhost:3000, in a second terminal
 cd client
 npm install
 cp .env.example .env.local
-# fill VITE_SUPABASE_* from Supabase: Project Settings > API
+# fill NEXT_PUBLIC_SUPABASE_* from Supabase: Project Settings > API
 npm run dev
 ```
 
@@ -70,7 +70,7 @@ Never commit `.env` / `.env.local`, and never put the Supabase service role key 
 ## Repository layout
 
 ```
-client/      vanilla JS app built with Vite (distributor PWA + admin dashboard)
+client/      Next.js app (distributor PWA + admin dashboard)
 server/      Laravel app (API, scoring, migrations for the Supabase database)
 docs/        architecture, API reference, test protocol
 ```

@@ -8,7 +8,7 @@ Requirements doc; cite requirement IDs (A-, D-, S-, C-, X-) when you implement t
 
 | Part | Stack | Notes |
 | --- | --- | --- |
-| `client/` | Vanilla JavaScript, npm, Vite | No frameworks (no React, Next.js, Vue). Distributor PWA + admin dashboard |
+| `client/` | Next.js 16 (TypeScript, App Router, Tailwind), npm | Distributor PWA + admin dashboard. Next 16 has breaking changes: read `client/AGENTS.md` and the docs in `client/node_modules/next/dist/docs/` before writing Next code |
 | `server/` | Laravel 13, PHP 8.5 | REST API, server-side scoring, integrity flags |
 | Database | Supabase **cloud** (Postgres) | Never a local database. Schema changes only via Laravel migrations |
 
@@ -22,7 +22,7 @@ Work is tracked as GitHub issues. Each **epic** (parent issue) has **sub-issues*
 always work on a single sub-issue (or a small standalone issue). Labels tell you where it
 belongs:
 
-- Area: `server` (Laravel, `server/`) or `ui` (vanilla JS, `client/`)
+- Area: `server` (Laravel, `server/`) or `ui` (Next.js, `client/`)
 - Phase: `phase-1` … `phase-5`. `phase-1` is only the minimal setup needed to test.
 
 **Stay inside the ticket's scope.**
@@ -31,6 +31,14 @@ belongs:
   until the server endpoint exists; follow the contract in `docs/api.md`.
 - Do only what the ticket's Tasks list. Anything else you find (bugs, refactors, missing
   endpoints) gets a new issue, not extra changes in this PR.
+
+**Check dependencies before you start.** Every ticket has a "Depends on" section (also
+linked as a GitHub issue dependency):
+- **Depends on**: these tickets must be closed first. Do not start until they are.
+- **Uses API from** (UI tickets): not required to start. Build with mock data that follows
+  the Swagger contract, and switch to the real endpoint once it is merged.
+- If you discover a new dependency, add it to the ticket's "Depends on" section (and the
+  GitHub dependency link) before you continue.
 
 Tickets owned by someone without GitHub access yet are recorded in `tickets/<issue-number>.md`.
 
@@ -80,7 +88,7 @@ chore/4-ci-setup
   ```js
   // S-62: orientation must come from a CSPRNG, never Math.random
   ```
-- Public functions/classes get a short doc block (JSDoc in `client/`, PHPDoc in `server/`):
+- Public functions/classes get a short doc block (TSDoc in `client/`, PHPDoc in `server/`):
   purpose, params, return value.
 - Formulas get the formula and units:
   ```js
@@ -95,7 +103,7 @@ chore/4-ci-setup
 - Check role/ownership on every API request; a distributor never sees another's data.
 - Eloquent / query builder only (prepared statements); no raw string-built SQL.
 - Secrets live in `.env` / `.env.local` only. Never commit them. The Supabase
-  **service role key never goes in `client/`** — only the anon key, via `VITE_` vars.
+  **service role key never goes in `client/`** — only the anon key, via `NEXT_PUBLIC_` vars.
 
 **Server (Laravel)**
 - Thin controllers; business logic in service classes (e.g. `app/Screening/Scorer.php`).
@@ -104,14 +112,18 @@ chore/4-ci-setup
 - Write a feature test for every endpoint and a unit test for every scoring rule.
   Tests run on in-memory SQLite; they never touch Supabase.
 
-**Client (vanilla JS)**
-- ES modules, one feature per file under `src/`. No globals.
-- Use `const`/`let`, `async`/`await`, `fetch`. Handle every error path the user can hit.
+**Client (Next.js)**
+- TypeScript everywhere, `strict` on. No `any` without a comment saying why.
+- App Router: pages in `src/app`, shared UI in `src/components`, logic in `src/lib`.
+  Server Components by default; add `"use client"` only where a component needs the
+  browser (the screening flow, offline queue, device APIs).
+- Style with Tailwind utility classes and the shared design tokens; no one-off CSS files.
+- Handle loading, empty, error and offline states for every screen the user can hit.
 - Must work offline (D-36 to D-39): queue writes in IndexedDB, sync when online.
 - Target Chrome for Android 100+ (X-17); keep first load small (X-18).
 
 **Before you finish**
-- `cd client && npm run build` passes.
+- `cd client && npm run lint && npm run build` passes.
 - `cd server && php artisan test` passes.
 - You ran the change and saw it work, not only the tests.
 
