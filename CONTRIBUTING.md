@@ -7,13 +7,15 @@ Two weeks, five people, one grade. These rules exist so we never block each othe
 `main` is protected. No direct pushes, no exceptions, including the person who
 set up the repository.
 
-Branch names:
+Every branch starts from an issue (the ticket) and carries its number:
 
 ```
-feat/<short-thing>     feat/screening-ladder
-fix/<short-thing>      fix/sync-duplicate
-docs/<short-thing>     docs/api-reference
+feat/<issue>-<short-thing>     feat/12-screening-ladder
+fix/<issue>-<short-thing>      fix/31-sync-duplicate
+docs/<issue>-<short-thing>     docs/7-api-reference
 ```
+
+See `AGENTS.md` for the full coding rules (also followed by AI agents).
 
 ## Pull requests
 
@@ -26,10 +28,11 @@ docs/<short-thing>     docs/api-reference
 
 ## The schema
 
-`database/schema.sql` is the only place the database is defined. If you change a
-table, change it there in the same PR. Never alter your local database without
-putting the change in that file — on the Friday before the demo we will all rebuild
-from it, and anything not in there is gone.
+Laravel migrations in `server/database/migrations` are the only place the database is
+defined. The database is our shared Supabase cloud project. If you change a table, add a
+migration in the same PR. Never change tables by hand in the Supabase dashboard — on
+the Friday before the demo we will rebuild from migrations, and anything not in them
+is gone.
 
 ## Things that must never be committed
 

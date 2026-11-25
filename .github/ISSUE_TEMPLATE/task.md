@@ -1,18 +1,27 @@
 ---
 name: Task
-about: A unit of work from the requirements
+about: A unit of work from the requirements (usually a sub-issue of an epic)
 title: ''
 labels: ''
 assignees: ''
 ---
 
-**Requirement ID(s):**
-<!-- e.g. D-13, X-03 — from the Requirements tab -->
+**Parent:** #<!-- epic number, if any -->  **Area:** <!-- server / ui -->  **Phase:** <!-- 1-5 -->
+**Requirements:** <!-- e.g. D-13, X-03 -->
 
-**What needs to exist when this is done**
+## Goal
 
-**Acceptance check**
-<!-- How do we prove it works? -->
+<!-- One sentence: what exists when this is done. -->
 
-**Workstream:**
-<!-- screening / api / stock / dashboard / security -->
+## Tasks
+
+- [ ]
+
+## Done when
+
+- [ ]
+- [ ] PR says `Closes #<this issue>`, is documented, and CI is green
+
+## Scope
+
+<!-- server ticket: only server/ + docs. ui ticket: only client/ + docs. -->
