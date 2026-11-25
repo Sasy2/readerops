@@ -1,29 +1,20 @@
+# Root rules only. client/ and server/ each have their own .gitignore.
+
 # Environment and secrets — never commit these
 .env
 .env.*
 !.env.example
 *.pem
 *.key
-config/local.php
 
-# Dependencies
-/vendor/
-/node_modules/
+# Dependencies (in case anything is installed at the root)
+node_modules/
+vendor/
 
-# Build and cache
-/public/build/
-*.cache
-.phpunit.result.cache
-
-# Logs and databases
+# Logs and local databases
 *.log
-/logs/
 *.sqlite
 *.sqlite3
-/database/dumps/
-
-# Uploads at runtime
-/public/uploads/
 
 # Editors
 .vscode/
@@ -36,6 +27,3 @@ config/local.php
 .DS_Store
 Thumbs.db
 desktop.ini
-
-# AMPPS / XAMPP local artefacts
-.htaccess.bak

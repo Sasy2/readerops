@@ -6,21 +6,43 @@ on:
   pull_request:
 
 jobs:
-  lint:
-    name: PHP syntax
+  client:
+    name: Client (vanilla JS + Vite)
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+
+      - run: npm ci
+      - run: npm run build
+
+  server:
+    name: Server (Laravel)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
     steps:
       - uses: actions/checkout@v4
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.5'
+          extensions: pdo_pgsql, pgsql, mbstring, intl, bcmath
 
-      - name: Lint every PHP file
-        run: |
-          find src api public -name '*.php' -print0 \
-            | xargs -0 -r -n1 php -l
+      - run: composer install --no-interaction --prefer-dist --no-progress
+      - run: cp .env.example .env && php artisan key:generate
+      # Tests run on in-memory SQLite (see phpunit.xml); they never touch Supabase.
+      - run: php artisan test
 
   secrets:
     name: No secrets committed
@@ -28,29 +50,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Fail if .env is tracked
+      - name: Fail if any .env file is tracked
         run: |
-          if git ls-files --error-unmatch .env 2>/dev/null; then
-            echo "::error::.env is committed. Remove it and rotate anything inside."
+          tracked=$(git ls-files | grep -E '(^|/)\.env(\..*)?$' | grep -v '\.env\.example$' || true)
+          if [ -n "$tracked" ]; then
+            echo "::error::Env files are committed: $tracked. Remove them and rotate anything inside."
             exit 1
           fi
-          echo "No .env in the repository."
-
-  schema:
-    name: Schema loads
-    runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:8
-        env:
-          MYSQL_ROOT_PASSWORD: ci
-          MYSQL_DATABASE: readerops
-        ports: [ '3306:3306' ]
-        options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -pci"
-          --health-interval=10s --health-timeout=5s --health-retries=5
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Load schema.sql
-        run: mysql -h 127.0.0.1 -uroot -pci readerops < database/schema.sql
+          echo "No .env files in the repository."

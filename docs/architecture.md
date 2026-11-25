@@ -1,7 +1,7 @@
 # Architecture
 
 ```
-  Distributor PWA            PHP REST API              MySQL
+  Distributor PWA            Laravel REST API          Supabase (Postgres)
   own Android phone  ---->   auth and roles    ---->   screenings (append only)
   calibrated chart           server scoring            customers, stock by power
   guided protocol            idempotent sync           commissions, referrals
