@@ -58,6 +58,9 @@ chore/4-ci-setup
 - Branch from an up-to-date `main`: `git switch main && git pull && git switch -c feat/12-screening-ladder`.
 - If there is no issue number for the task, ask for one before creating the branch.
 - Commit messages: imperative and short, ending with the issue, e.g. `Add ladder step logic (#12)`.
+- **Never add co-author or attribution lines** to commits or PRs: no `Co-Authored-By:`,
+  no `Claude-Session:`, no "Generated with …" footers. The commit author is the team
+  member who made the change.
 - One sub-issue per branch, one branch per PR.
 
 ### Every PR closes an issue and is documented
