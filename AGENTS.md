@@ -132,16 +132,28 @@ chore/4-ci-setup
 
 ## 5. Use the right skills — especially for UI
 
-If your agent supports skills/tools, load the relevant one **before** starting the work:
+This repo ships project skills in `.claude/skills/` (installed with `npx skills`, pinned in
+`skills-lock.json`). Load the relevant one **before** starting the work:
+
+| Task | Project skill |
+| --- | --- |
+| Any UI screen or component | `frontend-design` (layout, hierarchy, a distinctive non-generic look), then check it against `web-design-guidelines` |
+| Animation in React / Next.js | `gsap-react` (useGSAP, refs, cleanup) with `gsap-core`; `gsap-timeline` for sequences; `gsap-scrolltrigger`, `gsap-plugins`, `gsap-utils` when needed; `gsap-performance` before merging |
+| Deciding whether and how something should move | `find-animation-opportunities`, `animation-vocabulary` |
+| Reviewing or fixing motion | `review-animations`, `improve-animations`; `remove-animations` when the UI feels slow or over-animated |
+
+Other skills, if your agent has them:
 
 | Task | Use |
 | --- | --- |
-| Any UI screen or component | A design skill (e.g. `apple-design`, `design:design-critique`) to guide layout, hierarchy and spacing |
-| Accessibility | `design:accessibility-review` — WCAG 2.1 AA, contrast, touch targets, screen readers |
+| Accessibility | `design:accessibility-review`: WCAG 2.1 AA, contrast, touch targets, screen readers |
 | Button labels, errors, empty states | `design:ux-copy` |
-| Animations, transitions, feedback | `motion-design` / `microinteractions` |
 | Reviewing your own diff | `code-review`, `simplify` |
 | Auth, input handling, secrets | `security-review` |
+
+Motion rules: animation must help the user understand what happened. Never animate the
+screening test area or a symbol (S-14, S-51), respect `prefers-reduced-motion`, and keep the
+distributor app fast on low-end Android phones (X-18).
 
 **UI rules for this product**
 - Mobile first: design for a ~360px Android screen, then scale up (admin works 360–1920px, X-19).

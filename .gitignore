@@ -27,3 +27,6 @@ vendor/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Personal Claude Code settings (project skills in .claude/skills ARE committed)
+.claude/settings.local.json
