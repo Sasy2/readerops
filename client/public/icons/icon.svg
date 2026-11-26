@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#0066d6"/>
+  <!-- tumbling E (5x5 grid) scaled to 200px, centred: inside the maskable safe zone -->
+  <g transform="translate(156 156) scale(40)">
+    <path d="M0 0H5V1H1V2H5V3H1V4H5V5H0Z" fill="#ffffff"/>
+  </g>
+</svg>

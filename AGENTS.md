@@ -162,6 +162,10 @@ distributor app fast on low-end Android phones (X-18).
 - Always say "near vision screening", never "eye test". Never show a diagnosis (S-75).
 - The screening test area is plain white with nothing else in it and no CSS scaling (S-14, S-57).
 - Every screen has a loading, empty, error and offline state.
+- Never use the browser's `alert()`, `confirm()` or `prompt()`, and no inline alert text
+  near the bottom buttons. Show messages that need attention with the `TopModal` component
+  (`client/src/components/ui/TopModal.tsx`): it appears at the top of the screen, because the
+  action buttons live at the bottom.
 - Use semantic HTML (`button`, `label`, `main`, headings in order) before adding ARIA.
 
 ## 6. When unsure
